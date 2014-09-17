@@ -1,0 +1,85 @@
+\documentclass[12pt]{article}
+\renewcommand*{\familydefault}{\sfdefault}
+\usepackage{listings}
+\usepackage{amsmath}
+\usepackage{fullpage}
+\usepackage{tabularx}
+\usepackage{graphicx}
+\begin{document}
+\title{CS570 Machine Learning Homework 1}
+\author{Yuchen Hou}
+\maketitle
+
+\section{Decision boundary of voted and average perceptron}
+\subsection{Voted perceptron}
+No, it is not linear. Its classifier is
+\begin{align}
+  f_{voted}(x) = sign (\sum_{i=1}^m c_i sign(w_i \cdot x))
+\end{align}
+which can not be written in the form of
+\begin{align}
+  f_{voted}(x)= sign (w_{voted} \cdot x)
+\end{align}
+\subsection{Average perceptron}
+Yes, it is linear. Its classifier is
+\begin{align}
+  f_{average}(x)
+  &= sign (\sum_{i=1}^m (c_i w_i \cdot x))\\
+  &= sign ((\sum_{i=1}^m c_i w_i) \cdot x)\\
+  &= sign (w_{average} \cdot x)
+\end{align}
+where
+\begin{align}
+  w_{average} = (\sum_{i=1}^m c_i w_i)
+\end{align}
+This is obviousely a linear classifier with weight vector $w_{average}$. It has a linear decision boundary
+\begin{align}
+  w_{average} \cdot x = 0
+\end{align}
+
+\section{Passive-Agressive weight update margin}
+The linear weight update is
+\begin{align}
+  w_{t+_1} = w_{t} + \tau y_{t} x_{t}
+\end{align}
+The margin constraint
+\begin{align}
+  M
+  &= y_{t} (w_{t+1} \cdot x_{t})\\
+  &= y_{t} ((w_{t} + \tau y_{t} x_{t}) \cdot x_{t})\\
+  &= y_{t} (w_{t} \cdot x_{t} + \tau y_{t} x_{t} \cdot x_{t})\\
+  &= y_{t} w_{t} \cdot x_{t} + \tau x_{t} \cdot x_{t}
+\end{align}
+\begin{align}
+  \tau = \frac{M - y_{t} w_{t} \cdot x_{t}}{ x_{t} \cdot x_{t}}
+\end{align}
+When margin is greater than M, there is no update. In conclusion
+\begin{equation}
+  \tau =
+  \begin{cases}
+      0 & y_{t} (w_{t+1} \cdot x_{t}) \geq M \\
+      \frac{M - y_{t} w_{t} \cdot x_{t}}{ x_{t} \cdot x_{t}} & y_{t} (w_{t+1} \cdot x_{t}) < M
+  \end{cases}
+\end{equation}
+
+\section{Weight update algorithm with margin error}
+The desired algorithm can be viewed as a more general form of PA algorithm. The PA algorithm updates the weight vector to achieve margin 1 everytime the margin drops below 1. The desired algorithm for this problem should update the weight vector to achieve margin $\gamma$ everytime the margin drops below $\gamma$. A margin error refers to a unconfident but correct classification where margin is between 0 and $\gamma$. The goal of ensuring all the points in $B(x_{t},\gamma)$ having the same label (which should be a correct lable, as the classification of $x_{t}$ is correct), can be realized by achieving a margin of $\gamma$ at the center of the point $x_{t}$. The margin constraint for this algorithm should be
+\begin{align}
+  \gamma = y_{t} (w_{t+1} \cdot x_{t})
+\end{align}
+Following the same approach in previous problem (substituting $M$ with $\gamma $), the linear weight update is
+\begin{align}
+  w_{t+_1} = w_{t} + \tau y_{t} x_{t}
+\end{align}
+where
+\begin{equation}
+  \tau =
+  \begin{cases}
+      0 & y_{t} (w_{t+1} \cdot x_{t}) \geq \gamma  \\
+      \frac{\gamma  - y_{t} w_{t} \cdot x_{t}}{ x_{t} \cdot x_{t}} & y_{t} (w_{t+1} \cdot x_{t}) < \gamma 
+  \end{cases}
+\end{equation}
+
+\section{Empirical analysis}
+
+\end{document}

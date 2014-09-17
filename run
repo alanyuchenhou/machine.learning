@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -e
+record=result.tsv
+# echo " size(B) time(us)" > $record
+make -j
+./homework1.app mnist-training-set-5k > $record
+less result.tsv

@@ -26,3 +26,10 @@
 *.exe
 *.out
 *.app
+
+# misc
+*.png
+*.tsv
+*.pdf
+*.zip
+*.dat
