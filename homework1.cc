@@ -25,31 +25,54 @@ using std::inner_product;
 using std::transform;
 using std::plus;
 using std::minus;
-template <typename type>
 
-void vectorPlus(type & vectorPlus, type const & vector1, type const & vector2)
+template <class type>
+void vectorPlus(type & result, type const & vector1, type const & vector2)
 {
   transform(vector1.begin(), vector1.end(), vector2.begin(),
-	    vectorPlus.begin(), plus<double>());
+	    result.begin(), plus<double>());
 }
 
-template <typename type>
-void vectorMinus(type & vectorPlus, type const & vector1, type const & vector2)
+template <class type>
+void vectorMinus(type & result, type const & vector1, type const & vector2)
 {
   transform(vector1.begin(), vector1.end(), vector2.begin(),
-	    vectorPlus.begin(), minus<double>());
+	    result.begin(), minus<double>());
+}
+
+template <class sample_t, class weight_t>
+void getTau(string updateAlgorithm, double & tau, weight_t const & weight,
+	    sample_t const & sample, int classPrediction, int classReference)
+{
+  if (updateAlgorithm == "passiveAgressive")
+    {
+      double numerator = 1 -
+	(
+	 inner_product(weight[classPrediction].begin(), weight[classPrediction].end(),
+		       sample.begin(), 0.0) -
+	 inner_product(weight[classReference].begin(), weight[classReference].end(),
+		       sample.begin(), 0.0)
+	 );
+      double denominator = 2 *
+	inner_product(sample.begin(), sample.end(), sample.begin(), 0.0);
+      numerator = 1;
+      tau = numerator/denominator;
+    }
+  else if (updateAlgorithm == "perceptron") { tau = 1; }
+  else {assert(false);}
+    
 }
 
 int main(int argc, char** argv)
 {
-  assert(argc==2);
+  assert(argc==3);
   const int featureCount = 781;
   const int classCount = 10;
-  const int trainingCount = 100;
+  const int trainingCount = 10;
   typedef array<double, featureCount> sample_t;
   typedef array<sample_t, classCount> weight_t;
   weight_t weight = {{}};
-  printf("training.iteration mistake.count \n");
+  printf("training.iteration  mistake.count \n");
   // learn 100 iterations on the training data
   for (int trainingIteration = 0; trainingIteration < trainingCount; trainingIteration++)
     {
@@ -97,10 +120,12 @@ int main(int argc, char** argv)
 		  maxScore = currentScore;
 		}
 	    }
+	  double tau;
+	  getTau(argv[2], tau, weight, sample, classPrediction, classReference);
+	  // printf ("%f ", tau);
 	  if (classPrediction != classReference)
 	    {
 	      mistakeCount++;
-	      double tau = 1;
 	      sample_t scaledSample = {{}};
 	      for (int i = 0; i < featureCount; i++)
 		{
@@ -112,7 +137,6 @@ int main(int argc, char** argv)
 	  // printf("%10d %10d %10d \n", classReference, classPrediction, maxScore);
 	}
       printf("%16d %16d \n", trainingIteration, mistakeCount);
-      // printf("%10d \n", mistakeCount);
       fileStream.close();
     }
   return 0;
