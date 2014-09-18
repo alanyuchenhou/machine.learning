@@ -81,5 +81,51 @@ where
 \end{equation}
 
 \section{Empirical analysis}
-
+\subsection{The training for Perceptron and PA algorithm}
+\begin{figure}[htb]
+  \centering
+      {\includegraphics[width=1\linewidth]{result.png}} \rule{1\linewidth}{1pt}
+      \caption{The mistake counts during training for Perceptron and PA algorithm.}
+      \label{fig:result}
+\end{figure}
+The two learning curves are shown in Figure \ref{fig:result}. My observations are listed below.
+\begin{enumerate}
+  \item They both learn very fast during the first 10 iterations of their training.
+  \item They both improve gradually during the following iterations with small fluctuations in their progress.
+  \item Perceptron's learning progress is very similar to that of PA algorithm.
+\end{enumerate}
+\subsection{The accuracy of Perceptron and PA algorithm}
+\begin{figure}[htb]
+  \centering
+      {\includegraphics[width=1\linewidth]{accuracy.png}} \rule{1\linewidth}{1pt}
+      \caption{The accuracy during training and validation for Perceptron and PA algorithm.}
+      \label{fig:accuracy}
+\end{figure}
+The 4 accuracy curves are shown in Figure \ref{fig:accuracy}. My observations are listed below.
+\begin{enumerate}
+  \item All 4 accuracy improve very fast during the first 10 iterations of training.
+  \item They both improve gradually during the following iterations with small fluctuations in their progress.
+  \item Perceptron's accuracy is very similar to that of PA algorithm.
+  \item The accuracy on validation data is higher than that on training data; and it achieves 1 in about 50 iterations.
+\end{enumerate}
+\subsection{The comparison of the accuracy of Perceptron and PA algorithm}
+The accuracies of both algorithm achieve 1 so each one is as good as each other.
+\subsection{Shuffling the training data}
+Presumably shuffling improves learning progress and can speedup the increase of accuracy. However, I didn't mangage to observe any significant effect of shuffling.
+\subsection{Variable learning rate}
+\begin{figure}[htb]
+  \centering
+      {\includegraphics[width=1\linewidth]{accuracyVariable.png}} \rule{1\linewidth}{1pt}
+      \caption{The accuracy during training and validation for Perceptron with fixed and variable learning rate.}
+      \label{fig:accuracyVariable}
+\end{figure}
+The 4 accuracy curves are shown in Figure \ref{fig:accracyVariable}. I didn't observe any effect of variable learning rate. Decreasing learning reduces the effect of latter samples on the weight vector. I am not sure if this stratergy nessessarily improves the learning.
+\subsection{Variable training examples}
+\begin{figure}[htb]
+  \centering
+      {\includegraphics[width=1\linewidth]{variableTraining.png}} \rule{1\linewidth}{1pt}
+      \caption{The learning curve of perceptron and PA algorithm for different number of training samples.}
+      \label{fig:variableTraining}
+\end{figure}
+The 2 accuracy curves are shown in Figure \ref{fig:variableTraining}. Both of the 2 accuracy curves are very close to 1 regardless of training iterations. My explanation is even 1000 training examples are more than enough for the learning algorithm to accurately classify samples.
 \end{document}

@@ -15,7 +15,6 @@ using std::ifstream;
 using std::string;
 using std::getline;
 using std::stringstream;
-using std::cout;
 using std::endl;
 using std::stoi;
 using std::stod;
@@ -29,19 +28,17 @@ using std::minus;
 template <class type>
 void vectorPlus(type & result, type const & vector1, type const & vector2)
 {
-  transform(vector1.begin(), vector1.end(), vector2.begin(),
-	    result.begin(), plus<double>());
+  transform(vector1.begin(), vector1.end(), vector2.begin(), result.begin(), plus<double>());
 }
 
 template <class type>
 void vectorMinus(type & result, type const & vector1, type const & vector2)
 {
-  transform(vector1.begin(), vector1.end(), vector2.begin(),
-	    result.begin(), minus<double>());
+  transform(vector1.begin(), vector1.end(), vector2.begin(),result.begin(), minus<double>());
 }
 
 template <class sample_t, class weight_t>
-void getTau(string updateAlgorithm, double & tau, weight_t const & weight,
+void getTau(int iteration, string updateAlgorithm, double & tau, weight_t const & weight,
 	    sample_t const & sample, int classPrediction, int classReference)
 {
   if (updateAlgorithm == "passiveAgressive")
@@ -55,12 +52,12 @@ void getTau(string updateAlgorithm, double & tau, weight_t const & weight,
 	 );
       double denominator = 2 *
 	inner_product(sample.begin(), sample.end(), sample.begin(), 0.0);
-      numerator = 1;
+      numerator = 10;
       tau = numerator/denominator;
     }
   else if (updateAlgorithm == "perceptron") { tau = 1; }
+  else if (updateAlgorithm == "perceptronVariable") { assert(iteration >= 0); tau = 11; }
   else {assert(false);}
-    
 }
 
 int main(int argc, char** argv)
@@ -68,88 +65,86 @@ int main(int argc, char** argv)
   assert(argc==3);
   const int featureCount = 781;
   const int classCount = 10;
-  const int trainingCount = 10;
+  const int trainingCount = 100;
   typedef array<double, featureCount> sample_t;
   typedef array<sample_t, classCount> weight_t;
   weight_t weight = {{}};
-  printf("training.iteration  mistake.count \n");
-  // learn 100 iterations on the training data
-  for (int trainingIteration = 0; trainingIteration < trainingCount; trainingIteration++)
+  printf("training.iteration  mistake.count  accuracy \n");
+  for (int trainingSession = 1000; trainingSession < 5000; trainingSession+=1000)
     {
-      ifstream fileStream;
-      fileStream.open(argv[1]);
-      string line;
+  // learn 100 iterations on the training data
+      double accuracy = 0;
       int mistakeCount = 0;
-      // processing the training sample in every line of the file
-      // cout << "classReference classPrediction score " << endl;
-      while(getline(fileStream, line))
+      for (int trainingIteration = 0; trainingIteration < trainingCount; trainingIteration++)
 	{
-	  stringstream lineStream;
-	  lineStream.str(line);
-	  string cell;
-	  stringstream cellStream;
-	  string label;
-	  string feature;
-	  string value;
-	  assert(getline(lineStream, label, ' '));
-	  int classReference = stoi(label);
-	  sample_t sample = {{}};
-	  while(getline(lineStream, cell,' ')) // constructing the sample
+	  mistakeCount = 0;
+	  ifstream fileStream;
+	  fileStream.open(argv[1]);
+	  string line;
+	  int sampleCount = 0;
+	  // processing the training sample in every line of the file
+	  for (int i = 0; i <trainingSession; i++)
+	    // while(getline(fileStream, line))
 	    {
-	      cellStream.str(cell);
-	      assert(getline(cellStream, feature, ':'));
-	      assert(getline(cellStream, value));
-	      if (stoi(feature) < featureCount)
+	      assert(getline(fileStream, line));
+	      sampleCount++;
+	      stringstream lineStream;
+	      lineStream.str(line);
+	      string cell;
+	      stringstream cellStream;
+	      string label;
+	      string feature;
+	      string value;
+	      assert(getline(lineStream, label, ' '));
+	      int classReference = stoi(label);
+	      sample_t sample = {{}};
+	      while(getline(lineStream, cell,' ')) // constructing the sample
 		{
-		  sample[stoi(feature)] = stod(value);
+		  cellStream.str(cell);
+		  assert(getline(cellStream, feature, ':'));
+		  assert(getline(cellStream, value));
+		  if (stoi(feature) < featureCount)
+		    {
+		      sample[stoi(feature)] = stod(value);
+		    }
+		  cellStream.clear();
 		}
-	      cellStream.clear();
-	    }
-	  lineStream.clear();
-	  int classPrediction = {};
-	  int maxScore = {};
-	  // predict the class of the sample
-	  for (int currentClass = 0; currentClass < classCount; currentClass++)
-	    {
-	      int currentScore = {};
-	      currentScore = inner_product(weight[currentClass].begin(),
-					   weight[currentClass].end(), sample.begin(), 0.0);
-	      if (currentScore > maxScore) // update best match
+	      lineStream.clear();
+	      int classPrediction = {};
+	      int maxScore = {};
+	      // predict the class of the sample
+	      for (int currentClass = 0; currentClass < classCount; currentClass++)
 		{
-		  classPrediction = currentClass;
-		  maxScore = currentScore;
+		  int currentScore = {};
+		  currentScore = inner_product(weight[currentClass].begin(),
+					       weight[currentClass].end(), sample.begin(), 0.0);
+		  if (currentScore > maxScore) // update best match
+		    {
+		      classPrediction = currentClass;
+		      maxScore = currentScore;
+		    }
 		}
-	    }
-	  double tau;
-	  getTau(argv[2], tau, weight, sample, classPrediction, classReference);
-	  // printf ("%f ", tau);
-	  if (classPrediction != classReference)
-	    {
-	      mistakeCount++;
-	      sample_t scaledSample = {{}};
-	      for (int i = 0; i < featureCount; i++)
+	      double tau;
+	      getTau(trainingIteration, argv[2], tau, weight,
+		     sample, classPrediction, classReference);
+	      if (classPrediction != classReference)
 		{
-		  scaledSample[i] = tau*sample[i];
+		  mistakeCount++;
+		  sample_t scaledSample = {{}};
+		  for (int i = 0; i < featureCount; i++)
+		    {
+		      scaledSample[i] = tau*sample[i];
+		    }
+		  vectorPlus(weight[classReference], weight[classReference], scaledSample);
+		  vectorMinus(weight[classPrediction], weight[classPrediction], scaledSample);
 		}
-	      vectorPlus(weight[classReference], weight[classReference], scaledSample);
-	      vectorMinus(weight[classPrediction], weight[classPrediction], scaledSample);
+	      // printf("%10d %10d %10d \n", classReference, classPrediction, maxScore);
 	    }
-	  // printf("%10d %10d %10d \n", classReference, classPrediction, maxScore);
+	  accuracy = (double)(sampleCount-mistakeCount) / (double)sampleCount;
+	  // printf("%16d %16d %16f \n", trainingIteration, mistakeCount, accuracy);
+	  fileStream.close();
 	}
-      printf("%16d %16d \n", trainingIteration, mistakeCount);
-      fileStream.close();
-    }
+      printf("%16d %16d %16f \n", trainingSession, mistakeCount, accuracy);
+      }
   return 0;
 }
-
-// cout << "################################################################" << endl;
-// cout << "classReference classPrediction score " << endl;
-// cout << "sample = " << endl;
-// copy (sample.begin(), sample.end(), ostream_iterator<double>(cout, ", "));
-// cout << endl;
-// cout << "weight = " << endl;
-// for (int i = 0; i < 4; i++)
-//   {
-// 	copy (weight[i].begin(), weight[i].end(), ostream_iterator<double>(cout, ", "));
-// 	cout << endl;
-//   }	
