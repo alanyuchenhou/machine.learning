@@ -15,4 +15,3 @@ set key reverse Left bottom
 plot \
 algorithm1.".".data1.".variableTraning.tsv" using ($1):($3) title algorithm1.".".data1 with linespoints, \
    algorithm2.".".data1.".variableTraning.tsv" using ($1):($3) title algorithm2.".".data1 with linespoints
-      

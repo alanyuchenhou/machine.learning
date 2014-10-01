@@ -56,7 +56,6 @@ void getTau(int iteration, string updateAlgorithm, double & tau, weight_t const 
       tau = numerator/denominator;
     }
   else if (updateAlgorithm == "perceptron") { tau = 1; }
-  else if (updateAlgorithm == "perceptronVariable") { assert(iteration >= 0); tau = 11; }
   else {assert(false);}
 }
 

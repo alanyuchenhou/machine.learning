@@ -1,0 +1,97 @@
+\documentclass[12pt]{article}
+\renewcommand*{\familydefault}{\sfdefault}
+\usepackage{listings}
+\usepackage{amsmath}
+\usepackage{fullpage}
+\usepackage{tabularx}
+\usepackage{graphicx}
+\begin{document}
+\title{CS570 Machine Learning Homework 2}
+\author{Yuchen Hou}
+\maketitle
+
+\section{CLOSE classifier}
+According to the definition of CLOSE classifier, the following prediction rule satisfies the requirement
+\begin{align}
+  f(x) = (x - C_-)^2 - (x - C_+)^2
+\end{align}
+which can be reduced as
+\begin{align}
+  f(x) &= -2x \cdot C_- + C_-^2 - (-2x \cdot C_+ + C_+^2) \\
+  &=  2 (C_+ - C_-) x + C_-^2 - C_+^2 \\
+  &=  w \cdot x + b
+\end{align}
+where
+\begin{align}
+  w &=  2 (C_+ - C_-) \\
+  b &=  C_-^2 - C_+^2 
+\end{align}
+and the decision rule should be
+\begin{align}
+  \hat{y} &= sign(w \cdot x + b)
+\end{align}
+The weight vector can be written as a linear combination of all training examples
+\begin{align}
+  w &=  2 (C_+ - C_-) \\
+  &= 2 (\frac{1}{n_+}\sum_{i:y_i=+1}x_i - \frac{1}{n_-}\sum_{i:y_i=-1}x_i) \\
+  &= \sum_{i:y_i=+1} \frac{2}{n_+} (+1) x_i + \sum_{i:y_i=-1} \frac{2}{n_-} (-1) x_i \\
+  &= \sum_{i=1}^{n_+ + n_-} \alpha_i y_i x_i
+\end{align}
+where
+\begin{align}
+  \alpha_i =
+  \begin{cases}
+    \frac{2}{n_+} & i:y_i=+1 \\
+    \frac{2}{n_-} & i:y_i=-1
+  \end{cases}
+\end{align}
+A training vector is a support vector if and only if its dual weight is not zero. In this problem, all the dual weights are not zero so all the $(n_+ + n_-)$ training vectors are support vectors.
+\section{Higher dimensional feature space distance}
+\begin{align}
+  & ||\phi(x_i)-\phi(x_i)||^2 \\
+  =& \phi(x_i) \phi(x_i) - 2\phi(x_i) \phi(x_j) + \phi(x_j) \phi(x_j) \\
+  =& K(x_i, x_i) -2 K(x_i, x_j) + K(x_j, x_j) \\
+  =& 1 -2 exp(-\frac{1}{2} (x_i - x_j)^2) + 1
+\end{align}
+As
+\begin{align}
+  -2 exp(-\frac{1}{2} (x_i - x_j)^2) < 0
+\end{align}
+we have
+\begin{align}
+  ||\phi(x_i)-\phi(x_i)||^2 < 2
+\end{align}
+\section{Remote testing vector}
+\begin{align}
+  & f(x_f; \alpha,b) \\
+  =& \sum_{i} \alpha_i y_i K(x_i, x_f) + b \\
+  =& \sum_{i} \alpha_i y_i exp(-\frac{1}{2} (x_i - x_f)^2) + b
+\end{align}
+Therefore
+\begin{align}
+  & \lim_{x_i-x_f \to \infty} f(x_f; \alpha,b) \\
+  =& \sum_{i} \alpha_i y_i \lim_{x_i-x_f \to \infty} exp(-\frac{1}{2} (x_i - x_f)^2) + b \\
+  =& \sum_{i} \alpha_i y_i \cdot 0 + b \\
+  =& b
+\end{align}
+\section{Kernel property}
+No. This kernel violates the positivity in the following case
+\begin{align}
+  m &= 1 \\
+  x_m &= 1 \\
+  t &= 1
+\end{align}
+Because in this case
+\begin{align}
+  K =& (-1) \\
+  & t^T K t \\
+  =& 1 \cdot (-1) \cdot 1 \\
+  =& -1 \\
+  <& 0
+\end{align}
+where the positivity asserts
+\begin{align}
+   t^T K t > 0
+\end{align}
+\section{Empirical analysis}
+\end{document}
