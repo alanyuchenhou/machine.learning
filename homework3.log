@@ -1,8 +1,8 @@
-This is pdfTeXk, Version 3.141592-1.40.3 (Web2C 7.5.6) (format=pdflatex 2012.5.16)  7 OCT 2014 13:50
+This is pdfTeXk, Version 3.141592-1.40.3 (Web2C 7.5.6) (format=pdflatex 2012.5.16)  14 OCT 2014 17:18
 entering extended mode
  %&-line parsing enabled.
-**homework1.tex
-(./homework1.tex
+**homework3.tex
+(./homework3.tex
 LaTeX2e <2005/12/01>
 Babel <v3.8h> and hyphenation patterns for english, usenglishmax, dumylang, noh
 yphenation, arabic, basque, bulgarian, coptic, welsh, czech, slovak, german, ng
@@ -162,8 +162,8 @@ File: pdftex.def 2007/01/08 v0.04d Graphics/color for pdfTeX
 ))
 \Gin@req@height=\dimen123
 \Gin@req@width=\dimen124
-) (./homework1.aux)
-\openout1 = `homework1.aux'.
+) (./homework3.aux)
+\openout1 = `homework3.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 8.
 LaTeX Font Info:    ... okay on input line 8.
@@ -179,42 +179,75 @@ LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 8.
 LaTeX Font Info:    ... okay on input line 8.
  [1
 
-{/usr/share/texmf/fonts/map/pdftex/updmap/pdftex.map}] [2]
-<result.png, id=20, 1027.84pt x 1027.84pt>
-File: result.png Graphic file (type png)
- <use result.png>
-<accuracyVariable.png, id=21, 1027.84pt x 1027.84pt>
-File: accuracyVariable.png Graphic file (type png)
+{/usr/share/texmf/fonts/map/pdftex/updmap/pdftex.map}]
+LaTeX Font Info:    Try loading font information for OMS+cmss on input line 48.
 
-<use accuracyVariable.png>
-File: accuracyVariable.png Graphic file (type png)
- <use accuracyVariable.png> [3]
-<variableTraining.png, id=25, 1027.84pt x 1027.84pt>
-File: variableTraining.png Graphic file (type png)
+LaTeX Font Info:    No file OMScmss.fd. on input line 48.
 
-<use variableTraining.png> [4] [5 <./result.png (PNG copy)>] [6 <./accuracyVari
-able.png (PNG copy)>] [7] [8 <./variableTraining.png (PNG copy)>]
-(./homework1.aux) ) 
+
+LaTeX Font Warning: Font shape `OMS/cmss/m/n' undefined
+(Font)              using `OMS/cmsy/m/n' instead
+(Font)              for symbol `textbraceleft' on input line 48.
+
+[2]
+Overfull \hbox (3.68356pt too wide) in paragraph at lines 76--76
+[]|\OT1/cmss/m/n/12 0.1022| 
+ []
+
+
+Overfull \hbox (3.68356pt too wide) in paragraph at lines 76--76
+[]|\OT1/cmss/m/n/12 0.0031| 
+ []
+
+
+Overfull \hbox (3.68356pt too wide) in paragraph at lines 76--76
+[]|\OT1/cmss/m/n/12 0.0250| 
+ []
+
+
+Overfull \hbox (3.68356pt too wide) in paragraph at lines 76--76
+[]|\OT1/cmss/m/n/12 0.0149| 
+ []
+
+
+Overfull \hbox (3.68356pt too wide) in paragraph at lines 76--76
+[]|\OT1/cmss/m/n/12 0.1518| 
+ []
+
+
+Overfull \hbox (3.68356pt too wide) in paragraph at lines 76--76
+[]|\OT1/cmss/m/n/12 0.0481| 
+ []
+
+<homework3.png, id=17, 1027.84pt x 1027.84pt>
+File: homework3.png Graphic file (type png)
+ <use homework3.png> [3]
+<homework3_5c.png, id=21, 1027.84pt x 1027.84pt>
+File: homework3_5c.png Graphic file (type png)
+ <use homework3_5c.png>
+[4] [5] [6 <./homework3.png (PNG copy)>] [7 <./homework3_5c.png (PNG copy)>]
+(./homework3.aux)
+
+LaTeX Font Warning: Some font shapes were not available, defaults substituted.
+
+ ) 
 Here is how much of TeX's memory you used:
- 2492 strings out of 256216
- 32435 string characters out of 1917072
- 90626 words of memory out of 1500000
- 5784 multiletter control sequences out of 10000+200000
+ 2493 strings out of 256216
+ 32377 string characters out of 1917072
+ 92618 words of memory out of 1500000
+ 5785 multiletter control sequences out of 10000+200000
  10228 words of font info for 37 fonts, out of 1200000 for 2000
  645 hyphenation exceptions out of 8191
- 27i,15n,32p,733b,218s stack positions out of 5000i,500n,6000p,200000b,15000s
-</usr/share/texmf/fonts/type1/bluesky/cm/cmex10.pfb></usr/sh
-are/texmf/fonts/type1/bluesky/cm/cmmi12.pfb></usr/share/texmf/fonts/type1/blues
-ky/cm/cmmi6.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmmi8.pfb></usr/share/
-texmf/fonts/type1/bluesky/cm/cmr12.pfb></usr/share/texmf/fonts/type1/bluesky/cm
-/cmr6.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmr8.pfb></usr/share/texmf/f
-onts/type1/bluesky/cm/cmss12.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmss1
-7.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmssbx10.pfb></usr/share/texmf/f
-onts/type1/bluesky/cm/cmsy10.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmsy8
-.pfb>
-Output written on homework1.pdf (8 pages, 114083 bytes).
+ 27i,10n,32p,838b,257s stack positions out of 5000i,500n,6000p,200000b,15000s
+</usr/share/texmf/fonts/type1/bluesky/cm/cmex10.pfb></usr/share/texmf/fonts/t
+ype1/bluesky/cm/cmmi12.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmmi8.pfb><
+/usr/share/texmf/fonts/type1/bluesky/cm/cmr12.pfb></usr/share/texmf/fonts/type1
+/bluesky/cm/cmr8.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmss12.pfb></usr/
+share/texmf/fonts/type1/bluesky/cm/cmss17.pfb></usr/share/texmf/fonts/type1/blu
+esky/cm/cmssbx10.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmsy10.pfb>
+Output written on homework3.pdf (7 pages, 91936 bytes).
 PDF statistics:
- 83 PDF objects out of 1000 (max. 8388607)
+ 66 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 131072)
- 16 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 11 words of extra memory for PDF output out of 10000 (max. 10000000)
 

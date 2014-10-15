@@ -94,4 +94,32 @@ where the positivity asserts
    t^T K t > 0
 \end{align}
 \section{Empirical analysis}
+\begin{figure}[htb]
+  \centering
+      {\includegraphics[width=1\linewidth]{homework2_1.png}} \rule{1\linewidth}{1pt}
+      \caption{The accuracy vs C parameter for training, validation and testing with linear kernel}
+      \label{fig:accuracy1}
+\end{figure}
+With a linear kernel, the training, validation and testing accuracies varies significantly with the value of C parameter. Except for very small C, training accuracy is alwasys the highest, while validation and testing accuracy are very close. C is used to control the functional margin: the large C is, the smaller the margin is. In Figure \ref{fig:accuracy1}, we can see for very large C, as the margin is small, the fitting of the training examples (training accuracy) is very high; the smaller C is, the larger the margin is, and fitting training example becmoes more difficult, and training accuracy becomes much lower. On the other hand, for validation and testing data, the situation is similar, except for  after some point with C value around  (0.01, 0.1), the accuracy doesn't improve anymore, and actually decreases a little bit, due to large margin and higher generaliztion error.
+\begin{figure}[htb]
+  \centering
+      {\includegraphics[width=1\linewidth]{homework2_2.png}} \rule{1\linewidth}{1pt}
+      \caption{The accuracy vs C parameter for training, validation and testing with polynomial kernel of degree 2}
+      \label{fig:accuracy2}
+\end{figure}
+As shown in Figure \ref{fig:accuracy2}, After replacing the linear kernel with a polynomial kernel of degree 2, the training accuracy and validation accuracy do not manifest significant changes from their linear kernel counterparts. However, the testing accuracy differs from its linear kernel counterpart in two ways: firstly, when C drops below 0.1, the accuracy is very low, which means this linear kernel is more sensitive to noise; secondly, when C exceeds 100, the accuracy can still improve, which shows the kernel's good performance in high slack situations.
+\begin{figure}[htb]
+  \centering
+      {\includegraphics[width=1\linewidth]{homework2_3.png}} \rule{1\linewidth}{1pt}
+      \caption{The accuracy vs C parameter for training, validation and testing with polynomial kernel of degree 3}
+      \label{fig:accuracy3}
+\end{figure}
+In Firgure \ref{fig:accuracy3}, the only noticible change from polynomial kernel of degree 2 to degree 3, is that the testing accuracy decreases when C is around the range (0.1, 100). The explanation for this phenomenon is that higer degree kenel is more sensitive to noise due to larger margin.
+\begin{figure}[htb]
+  \centering
+      {\includegraphics[width=1\linewidth]{homework2_4.png}} \rule{1\linewidth}{1pt}
+      \caption{The accuracy vs C parameter for training, validation and testing with polynomial kernel of degree 4}
+      \label{fig:accuracy4}
+\end{figure}
+The final variation of the kernel is from polynomial kernel of degree 2 to degree 3, which shows the same trend as before. The difference compared to polynomial kernel of degree 3 is quantitative: the testing accuracy decreases when C is around the range (1, 1000). It further supports the explanation that higer degree kenel is more sensitive to noise due to larger margin.
 \end{document}

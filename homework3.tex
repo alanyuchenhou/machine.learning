@@ -1,0 +1,119 @@
+\documentclass[12pt]{article}
+\renewcommand*{\familydefault}{\sfdefault}
+\usepackage{listings}
+\usepackage{amsmath}
+\usepackage{fullpage}
+\usepackage{tabularx}
+\usepackage{graphicx}
+\begin{document}
+\title{CS570 Machine Learning Homework 3}
+\author{Yuchen Hou}
+\maketitle
+
+\section{Nearest neighbors}
+\subsection{Distance calcuation}
+First, we can reduce the inequality to be prooved
+\begin{align}
+  & ( \frac{1}{\sqrt{d}} \sum_{i=1}^{d}x_i - \frac{1}{\sqrt{d}} \sum_{i=1}^{d}z_i )^2 \leq \sum_{i=1}^{d}(x_i - z_i)^2 \\
+  \iff & ( \frac{1}{d} ( \sum_{i=1}^{d}x_i - \sum_{i=1}^{d}z_i) )^2 \leq \frac{1}{d} \sum_{i=1}^{d} (x_i - z_i)^2 \\
+  \iff & ( \frac{1}{d} \sum_{i=1}^{d}(x_i-z_i) )^2 \leq \frac{1}{d} \sum_{i=1}^{d} (x_i - z_i)^2 \\
+  \iff & E(y)^2 \leq E(y^2)
+\end{align}
+where $y_i=x_i-z_i$. This can be prooved using Jensen's inequality with convex function $ f(y) = y^2 $
+\begin{align}
+  f(E(y)) &\leq E(f(y)) \\
+  E(y)^2 &\leq E(y^2)
+\end{align}
+\subsection{Computation efficiency}
+Using the above property, we can evaluate the distance as
+\begin{align}
+  ( \sum_{i=1}^{d}(x_i-z_i) )^2
+\end{align}
+which is no more than the Euclidean distance
+\begin{align}
+  \sum_{i=1}^{d} (x_i - z_i)^2
+\end{align}
+In this way, we can make the computation efficient because now the computation reduces multiplication from d to 1, and it does not change the numbers of other computation operations.
+\section{Locality Sensitive Hashing}
+In this paper, Andoni and Indyk give an overview of several approximate and exact nearest neighbor problem.
+\subsection{Problem}
+The problem considered in this paper is slightly different than the problem we discussed in class. The nearest neighbor problem we considered in class required the search for the nearest neighbor, while the the problem in this paper essentially requires only a near neighbor. The rationale is a near neighbor is good enough and the nearest one is not necessary in many situations.
+\subsection{Approach}
+The key of searching for near neighbor efficiently is a suitable data structure to store the data. In this particular case, several hash funtions hash the objects into buckets so that 2 objects closer in distance are more likely to be hashed to same bucket. 
+\subsection{Locality-sensitive hashing algorithm}
+Locality-sensitive hashing is realized by a set of L hashing functions G = {$g_1(), g_2(),...g_L()$}, where each hashing function $g_i()$ maps a point p into a bucket $g_i(p)$ (equivalently, $g_i()$ maps the point space P into a hash table), and $g_i()$ is a concatenation of several member functions from a locality sensitive hashing function family. To search for query point q, a near neighbor can be selected from a bucket that q is hashed to. By scanning through all the buckets $g_1(q)...g_L(q)$, all near neighbors of q can be found. There are multiple flavors of the algorithm regarding their ways of finish. It can stop searching as soon as a number of neighbbors are found, or after a complete search through all the hash tables. It can report all the objects that it finds, or only a number of the nearest ones.
+\section{Rule set and decision tree conversion}
+The possibility of the conversion depends on the rule set R. I will show 1 simple example for each case: one for a convertable R and one for a inconvertable R. Through these 2 examples we can conclude that only Rs with some restrictions can be converted to a decision tree.
+\subsection{Convertable R}
+R = \{r0: if x $<$ 3 then class = 0; r1: if x $\geq$ 3 then class = 1;\}. In this case, R can be converted to a decision tree with only one non-leaf node of condition x $<$ 3.
+\subsection{Inconvertable R}
+R = \{r0: if x $<$ 0 then class = 0; r1: if x $>$ 3 then class = 1;\}. In this case, R cannot be conveted to a decision tree as there are no rules for the range of [0, 3].
+\section{ID3 decision tree learning algorithm}
+The original entropy is 
+\begin{align}
+  H(Y) &= - \sum_{y} (P(Y = y) lg(P(Y = y))) \\
+  &= 0.9402
+\end{align}
+The splitting rule of choice is the one that gnerates the smallest conditional entropy and largest information gain.
+\begin{align}
+  H(Y|Z) &= \sum_{z} (P(Z = z) H(Y | Z = z)) \\
+  H(Y|Z=z) &= - \sum_{y} (P(Y = y|Z=z) lg(P(Y = y|Z=z))) \\
+  G(Z) &= H(Y) - H(Y|Z)
+\end{align}
+where Z is a random varialbe corresponding to a splitting rule.
+\begin{table}[htb]
+  \centering
+  \begin{tabularx}{\textwidth}{|l|l|l|l|l|l|l|l|X|} \hline
+    z & P(!y$|$!z) & P(y$|$!z) & P(!z) & P(!y$|$z) & P(y$|$z) & P(z) & H(Y$|$Z) & G(Z) \\ \hline
+    $outlook<sunny$ & 2/9 & 7/9 & 9/14 & 3/5 & 2/5 & 5/14 & 0.8380 & 0.1022 \\ \hline
+    %% outlook==overcast & 5/10 & 5/10 & 10/14 & 0/4 & 4/4 & 4/14 & 0.7142 & 0.2260 \\ \hline
+    $outlook<overcast$ & 3/9 & 6/9 & 9/14 & 2/5 & 3/5 & 5/14 & 0.9371 & 0.0031 \\ \hline
+    $temp<hot$ & 2/4 & 2/4 & 4/14 & 3/10 & 7/10 & 10/14 & 0.9152 & 0.0250 \\ \hline
+    %% temp==mild & 3/8 & 5/8 & 8/14 & 2/6 & 4/6 & 6/14 & 0.9389 & 0.0013 \\ \hline
+    $temp<mild$ & 4/10 & 6/10 & 10/14 & 1/4 & 3/4 & 4/14 & 0.9253 & 0.0149 \\ \hline
+    $humidity<high$ & 1/7 & 6/7 & 7/14 & 4/7 & 3/7 & 7/14 & 0.7884 & 0.1518 \\ \hline
+    $wind<weak$ & 3/6 & 3/6 & 6/14 & 2/8 & 6/8 & 8/14 & 0.8921 & 0.0481 \\ \hline
+  \end{tabularx}
+  \caption{conditional entropy and information gain for every splitting rule z}
+  \label{tab:entropy}
+\end{table}
+The possible splitting rules and their corresponding conditional entropies are listed below in Table \ref{tab:entropy}, where y stands for playtennis == yes. As the features' values are not numerical but enumerated, I have used the following assumptions for the enumerated values to enable decision tree classifier: $sunny > overcast > rain, hot > mild > cool$. The maximum information gain is achieved when the the feature humidity is selected to make the decision.
+\section{Empirical analysis}
+\subsection{K-nearest neighbor classifier}
+\begin{figure}[htb]
+  \centering
+      {\includegraphics[width=1\linewidth]{homework3.png}} \rule{1\linewidth}{1pt}
+      \caption{The k-nearest neighbor classifier accuracy for different k parameter for training, validation and testing data with weka.classifiers.lazy.IBk}
+      \label{fig:accuracy}
+\end{figure}
+Figure \ref{fig:accuracy} shows the accuracy of k-nearest neighbor classifier (weka.classifiers.lazy.IBk). Specifically, the k parameter has different effects on training, validation and testing accuracy. The training accuracy is obtained with test option [use training set] while the validation and testing accuracy is obtained with test option [supplied test set]. My observations are listed below
+\begin{enumerate}
+\item No matter what values k assumes, the training accuracy is always the highest, the validation accuracy is always the lowest.
+\item The training accuracy achieves 100\% when k = 1, but that does not imply a high testing accuracy or validation accuracy. This is a good exmple that training accuracy is not a good performance measure.
+\item As k increases, training accuracy decreases with fluctuations; testing accuracy increases first and then decreases, achieving a maximum at k = 2.
+\item Validation accuracy behaves abnormally. It fluctuates and does not correspond to testing accuracy. Validation accuracy achieves its minimum at k=2 where testing accuracy achieves its maximum.
+\item As larger k values generally makes learning more robust against noise but also less sensitive to training data, we can infer that the data does not have much noise. This should be the reason that smaller k values provide higher testing accuracies.
+\end{enumerate}
+\subsection{Decision tree classifier (unpruned)}
+The accuracy of unpruned decision tree classifier (weka.classifiers.trees.J48) is as follows. The tree is set as unpruned with option [-U].
+\begin{enumerate}
+\item training accuracy: 100\%
+\item validation accuracy: 66.4\%
+\item testing accuracy: 69.2029\%
+\end{enumerate}
+\subsection{Decision tree classifier (pruned)}
+The accuracy of pruned decision tree classifier is obtained with a similar method to the above unpruned tree. The two differences are: using [-M 10] option to set minimum number of examples per leaf as 10; using [-C] option to set confidence factor to a variety of values ranging from 0.05 to 0.5.
+\begin{figure}[htb]
+  \centering
+      {\includegraphics[width=1\linewidth]{homework3_5c.png}} \rule{1\linewidth}{1pt}
+      \caption{The decision tree classifier accuracy for different c parameter for training, validation and testing data with weka.classifiers.trees.J48}
+      \label{fig:accuracy_decision_tree}
+\end{figure}
+Figure \ref{fig:accuracy_decision_tree} shows the accuracy of decision tree classifier (weka.classifiers.trees.J48). The confidence factor has same effect for training, validation and testing accuracy. My observations are listed below
+\begin{enumerate}
+\item The training accuracy is always higher than testing accuracy, which is in turn higher than validation accuracy.
+\item When the confidence factor is less than 0.15, the accuracy increases with confidence factor. As small confidence factor incurs more pruning, my interpretation is these learning experiments suffer from aggressive pruning. The smaller the confidence factor is, the more pruning there is, and the decision tree becomes overly reduced and simplified and loses its accuracy.
+\item When the confidence factor is between 0.15 to 0.45, the accuracies remain constant.
+\item When the confidence factor is greater than 0.45, the training accuracy resumes increasing, but the validation and testing accuracy starts decreasing. This is a sign of overfitting. My interpretation is these learning experiments suffer from weak prunning, which allows outliers or noisy data make the decision tree too complicated and inaccurate.
+\end{enumerate}
+\end{document}

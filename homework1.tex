@@ -10,7 +10,19 @@
 \author{Yuchen Hou}
 \maketitle
 
-\section{Decision boundary of voted and average perceptron}
+\section{Voted and average perceptron}
+The linear weight update is
+\begin{align}
+  w_{t+_1} = w_{t} + \tau y_{t} x_{t}
+\end{align}
+where
+\begin{align}
+  \tau =
+  \begin{cases}
+      0 & y_{t} (w_t \cdot x_{t}) \geq 0 \\
+      1 & y_{t} (w_t \cdot x_{t}) < 0
+  \end{cases}
+\end{align}
 \subsection{Voted perceptron}
 No, it is not linear. Its classifier is
 \begin{align}
@@ -54,13 +66,13 @@ The margin constraint
   \tau = \frac{M - y_{t} w_{t} \cdot x_{t}}{ x_{t} \cdot x_{t}}
 \end{align}
 When margin is greater than M, there is no update. In conclusion
-\begin{equation}
+\begin{align}
   \tau =
   \begin{cases}
-      0 & y_{t} (w_{t+1} \cdot x_{t}) \geq M \\
-      \frac{M - y_{t} w_{t} \cdot x_{t}}{ x_{t} \cdot x_{t}} & y_{t} (w_{t+1} \cdot x_{t}) < M
+      0 & y_{t} (w_t \cdot x_{t}) \geq M \\
+      \frac{M - y_{t} w_{t} \cdot x_{t}}{ x_{t} \cdot x_{t}} & y_{t} (w_t \cdot x_{t}) < M
   \end{cases}
-\end{equation}
+\end{align}
 
 \section{Weight update algorithm with margin error}
 The desired algorithm can be viewed as a more general form of PA algorithm. The PA algorithm updates the weight vector to achieve margin 1 everytime the margin drops below 1. The desired algorithm for this problem should update the weight vector to achieve margin $\gamma$ everytime the margin drops below $\gamma$. A margin error refers to a unconfident but correct classification where margin is between 0 and $\gamma$. The goal of ensuring all the points in $B(x_{t},\gamma)$ having the same label (which should be a correct lable, as the classification of $x_{t}$ is correct), can be realized by achieving a margin of $\gamma$ at the center of the point $x_{t}$. The margin constraint for this algorithm should be
@@ -97,7 +109,7 @@ The two learning curves are shown in Figure \ref{fig:result}. My observations ar
 \subsection{The accuracy of Perceptron and PA algorithm}
 \begin{figure}[htb]
   \centering
-      {\includegraphics[width=1\linewidth]{accuracy.png}} \rule{1\linewidth}{1pt}
+      {\includegraphics[width=1\linewidth]{accuracyVariable.png}} \rule{1\linewidth}{1pt}
       \caption{The accuracy during training and validation for Perceptron and PA algorithm.}
       \label{fig:accuracy}
 \end{figure}
@@ -119,7 +131,7 @@ Presumably shuffling improves learning progress and can speedup the increase of 
       \caption{The accuracy during training and validation for Perceptron with fixed and variable learning rate.}
       \label{fig:accuracyVariable}
 \end{figure}
-The 4 accuracy curves are shown in Figure \ref{fig:accracyVariable}. I didn't observe any effect of variable learning rate. Decreasing learning reduces the effect of latter samples on the weight vector. I am not sure if this stratergy nessessarily improves the learning.
+The 4 accuracy curves are shown in Figure \ref{fig:accuracyVariable}. I didn't observe any effect of variable learning rate. Decreasing learning reduces the effect of latter samples on the weight vector. I am not sure if this stratergy nessessarily improves the learning.
 \subsection{Variable training examples}
 \begin{figure}[htb]
   \centering

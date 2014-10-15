@@ -1,4 +1,4 @@
-This is pdfTeXk, Version 3.141592-1.40.3 (Web2C 7.5.6) (format=pdflatex 2012.5.16)  1 OCT 2014 12:43
+This is pdfTeXk, Version 3.141592-1.40.3 (Web2C 7.5.6) (format=pdflatex 2012.5.16)  2 OCT 2014 00:41
 entering extended mode
  %&-line parsing enabled.
 **homework2.tex
@@ -179,28 +179,42 @@ LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 8.
 LaTeX Font Info:    ... okay on input line 8.
  [1
 
-{/usr/share/texmf/fonts/map/pdftex/updmap/pdftex.map}] [2] [3] (./homework2.aux
-) ) 
+{/usr/share/texmf/fonts/map/pdftex/updmap/pdftex.map}] [2]
+<homework2_1.png, id=21, 1027.84pt x 1027.84pt>
+File: homework2_1.png Graphic file (type png)
+ <use homework2_1.png>
+<homework2_2.png, id=22, 1027.84pt x 1027.84pt>
+File: homework2_2.png Graphic file (type png)
+ <use homework2_2.png>
+<homework2_3.png, id=23, 1027.84pt x 1027.84pt>
+File: homework2_3.png Graphic file (type png)
+ <use homework2_3.png>
+<homework2_4.png, id=24, 1027.84pt x 1027.84pt>
+File: homework2_4.png Graphic file (type png)
+ <use homework2_4.png> [3]
+[4 <./homework2_1.png (PNG copy)>] [5 <./homework2_2.png (PNG copy)>] [6 <./hom
+ework2_3.png (PNG copy)>] [7 <./homework2_4.png (PNG copy)>] (./homework2.aux) 
+) 
 Here is how much of TeX's memory you used:
- 2470 strings out of 256216
- 32030 string characters out of 1917072
- 91594 words of memory out of 1500000
- 5766 multiletter control sequences out of 10000+200000
+ 2496 strings out of 256216
+ 32476 string characters out of 1917072
+ 91626 words of memory out of 1500000
+ 5787 multiletter control sequences out of 10000+200000
  9934 words of font info for 36 fonts, out of 1200000 for 2000
  645 hyphenation exceptions out of 8191
- 27i,14n,32p,226b,218s stack positions out of 5000i,500n,6000p,200000b,15000s
-</usr/share/texmf/fonts/type1/bluesky/cm/cmex10.pfb></usr/share/texmf/fonts/
-type1/bluesky/cm/cmmi12.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmmi6.pfb>
-</usr/share/texmf/fonts/type1/bluesky/cm/cmmi8.pfb></usr/share/texmf/fonts/type
-1/bluesky/cm/cmr12.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmr6.pfb></usr/
-share/texmf/fonts/type1/bluesky/cm/cmr8.pfb></usr/share/texmf/fonts/type1/blues
-ky/cm/cmss12.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmss17.pfb></usr/shar
-e/texmf/fonts/type1/bluesky/cm/cmssbx10.pfb></usr/share/texmf/fonts/type1/blues
-ky/cm/cmsy10.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmsy6.pfb></usr/share
-/texmf/fonts/type1/bluesky/cm/cmsy8.pfb>
-Output written on homework2.pdf (3 pages, 60341 bytes).
+ 27i,14n,32p,923b,220s stack positions out of 5000i,500n,6000p,200000b,15000s
+</usr/share/texmf/fonts/type1/bluesky/cm/cmex10.pfb></usr/share/texmf/fonts/ty
+pe1/bluesky/cm/cmmi12.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmmi6.pfb></
+usr/share/texmf/fonts/type1/bluesky/cm/cmmi8.pfb></usr/share/texmf/fonts/type1/
+bluesky/cm/cmr12.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmr6.pfb></usr/sh
+are/texmf/fonts/type1/bluesky/cm/cmr8.pfb></usr/share/texmf/fonts/type1/bluesky
+/cm/cmss12.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmss17.pfb></usr/share/
+texmf/fonts/type1/bluesky/cm/cmssbx10.pfb></usr/share/texmf/fonts/type1/bluesky
+/cm/cmsy10.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmsy6.pfb></usr/share/t
+exmf/fonts/type1/bluesky/cm/cmsy8.pfb>
+Output written on homework2.pdf (7 pages, 127496 bytes).
 PDF statistics:
- 64 PDF objects out of 1000 (max. 8388607)
+ 86 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 131072)
- 1 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 21 words of extra memory for PDF output out of 10000 (max. 10000000)
 
