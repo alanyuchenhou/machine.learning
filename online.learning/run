@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+set -e
+make -j
+for algorithm in perceptron passiveAgressive
+do
+    for data in training
+    do
+	fileName=$algorithm.$data.variableTraning.tsv
+	echo $fileName > $fileName
+	time ./homework1.app $data.dat $algorithm >> $fileName &
+    done
+done
