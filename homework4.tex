@@ -1,0 +1,179 @@
+\documentclass[12pt]{article}
+\renewcommand*{\familydefault}{\sfdefault}
+\usepackage{listings}
+\usepackage{amsmath}
+\usepackage{fullpage}
+\usepackage{tabularx}
+\usepackage{graphicx}
+\usepackage{cite}
+\begin{document}
+\title{CS570 Machine Learning Homework 4}
+\author{Yuchen Hou}
+\maketitle
+
+\section{Probability classifier asymptotic accuracy}
+Research by Ng and Jordan has a comparison between the 2 probability classifiers: logistic regression has lower asymptotic error; naive Bayes approaches its asymptotic error faster \cite{jordan2002discriminative}. I have not fully understood their specific theoretical argument and their experiments on 15 datasets only partly support their claim: 8 out of 15 of their experiments support their claim, while the rest 7 out of 15 experiments do not directly support, but are believed to support their claim if the experiments include sufficient large datasets. I guess the reason lies in a general rule in many machine learning methods: simpler and more direct approaches have better scalability (in this case, logistic regression's approach).
+\subsection{}
+Logistic regression is better than or the same as naive Bayes, because logistic regression is simpler and more direct than naive Bayes.
+\subsection{}
+Logistic regression is better than naive Bayes. Beyond the reason mentioned above, another reason is that the conditional independence of the features given the lable does not hold any more, which is critical for naive Bayes to be accurate.
+
+\section{Probability classifier feature distribution learning}
+Assume
+\begin{align*}
+  X &= (X_1, X_2, ... X_d) \\
+  x_i &\in \{a_1, a_2, ... a_m\} \\
+  y &\in \{b_1, b_2, ... b_n\}
+\end{align*}
+\subsection{}
+Yes. A naive bayes estimates the following distributions
+\begin{align*}
+  p(Y) \\
+  p(X_i|Y)
+\end{align*}
+and then calculates the following distribution based on naive bayes assumption
+\begin{align*}
+  p(X=x|Y=y) = \prod_{i=1}^{i=d} p(X_i=x_i|Y=y)
+\end{align*}
+It can then calculate the feature distribution
+\begin{align*}
+  p(X=x) &= \sum_y (p(Y=y) p(X=x|Y=y))
+\end{align*}
+\subsection{}
+No. The only parameter logistic regression learns is the weight vector like a linear classifier, it does not estimate any feature, lable, conditional or joint distribution. Therefore, there are not enough parameters to calculate the feature distribution.
+
+\section{Multiclass logistic regression}
+\subsection{Log likelihood and gradient ascent}
+The posterior probability is represented using the soft-max function
+\begin{align*}
+p(Y=k|X=x) = \frac{exp(w_k \cdot x)} { \sum_j exp(w_j \cdot x)}
+\end{align*}
+The learning objective function is
+\begin{align*}
+l(w) = \sum_i log (p(Y=y^i|X=x^i))
+\end{align*}
+The optimum weight vector is
+\begin{align*}
+w = argmax_w l(w)
+\end{align*}
+Using gradient ascent
+%% p(Y=y^i|X=x^i) = \frac{exp(w_{y^i} \cdot {x^i})} { \sum_j exp(w_j \cdot {x^i})}
+\begin{align*}
+  v
+  &= w_k \\
+  y_k^i &=
+  \begin{cases}
+    1 & y^i = k \\
+    0 & y^i \neq k
+  \end{cases} \\
+  \frac {\partial l_i} {\partial v_m}
+  &= \frac {\partial log (p(Y=y^i|X=x^i))}{\partial v_m} \\
+  &= \frac{1}{(p(Y=y^i|X=x^i))} \frac {\partial (p(Y=y^i|X=x^i))}{\partial v_m} \\
+  &= \frac{1}{(\frac{exp(w_{y^i} \cdot {x^i})} { \sum_j exp(w_j \cdot {x^i})})} \frac {\partial (\frac{exp(w_{y^i} \cdot {x^i})} { \sum_j exp(w_j \cdot {x^i})})}{\partial v_m} \\
+  &= {\frac{ \sum_j exp(w_j \cdot {x^i})} {exp(w_{y^i} \cdot {x^i})} } \frac {y_k^i exp(v \cdot x^i) x_m^i \cdot {\sum_j exp(w_j \cdot {x^i})} - exp(v \cdot x^i) x_m^i \cdot {exp(w_{y^i} \cdot {x^i})}} {({\sum_j exp(w_j \cdot {x^i})})^2} \\
+  &= (y_k^i - \frac{exp(w_k \cdot x^i)} { \sum_j exp(w_j \cdot x^i)}) x_m^i \\
+  &= (y_k^i - p(Y=k|X=x_i)) x_m^i \\
+  \frac {\partial l} {\partial v_m}
+  &= \sum_i \frac {\partial l_i} {\partial v_m} \\
+  &= \sum_i (y_k^i - p(Y=k|X=x_i)) x_m^i \\
+  \nabla_{w_k} l
+  &= \sum_m \frac{\partial l}{\partial {v_m}} \\
+  &= \sum_i (y_k^i - p(Y=k|X=x^i))x^i \\
+\end{align*}
+\subsection{Log likelihood with regularization term}
+The original update rule is
+\begin{align*}
+  \nabla_{w_k} l  &= \sum_i (y_k^i - p(Y=k|X=x^i))x^i \\
+  w &= w + \eta \nabla_{w_k} l \\
+\end{align*}
+After adding a regularization term to the objective function
+\begin{align*}
+  l'(w)
+  &= l(w) - \lambda \sum_k w_k^2 \\
+  \nabla_{w_k} l'
+  &= \nabla_{w_k} (l(w) - \lambda \sum_k w_k^2) \\
+  &= \sum_i ((y_k^i - p(Y=k|X=x^i))x^i) - 2 \lambda w_k \\
+  w
+  &= w + \eta \nabla_{w_k} l' \\
+\end{align*}
+
+\section{Statistical tests}
+\subsection{Motivation and focus of the study}
+The study by Dietterich \cite{dietterich1998approximate} focuses on investigating one of the most important questions in experimental machine learning regarding statistical methods for a classification: algorithm selection for single domain with small dataset. The question under consideration in this study is specified by the following characteristics
+\begin{description}
+  \item[single or multiple domain] to find the best classifier or algorithm to apply in a single application domain, or in multiple application domains;
+  \item[algorithm or classifier] to find a classifier that assigns every data instance to a class, or a learning algorithm to construct a classifier;
+  \item[estimation or selection] to predict the accuracy of the classifier and to choose the best classifier from a set of classifiers;
+  \item[large or small dataset] large dataset requires simple statistical methods but small ones requires resampling;
+\end{description}
+\subsection{Goals of the study}
+The study has the following goals:
+\begin{enumerate}
+  \item to evaluate the performance of a few existing statistical tests;
+  \item to demonstrate that the above exisiting tests are inadequate;
+  \item to propose a new statistical test that shows acceptable performance as an answer to the question the study focuses on;
+\end{enumerate}
+\subsection{Approach}
+The approach/procedure of this study is composed of the following steps:
+\begin{enumerate}
+  \item describe 5 statistical tests under consideration;
+  \item describe a simulation study that measures type I error;
+  \item conduct the above simulation study and rule out a unqualified test;
+  \item conduct a set of experiemnts using real algorithms on real datasets to obtain a more realistic evaluation for type I error and power of the 4 remaining tests;
+\end{enumerate}
+\subsection{Statistical tests}
+This research studies 5 approximate statistical tests. Theses tests are designed to measure the performance differences of learning algorithms on a learning task. They are enumerated below.
+\begin{enumerate}
+  \item a test for the difference of 2 proportions;
+  \item a paired-differences t test based on taking several random train/test splits;
+  \item a paired-differences t test based on 10-fold cross validation;
+  \item McNemar's test;
+  \item 5x2cv, based on 5 iterations of 2-fold cross-validation;
+\end{enumerate}
+\subsection{Performance metric of the tests}
+The performance of each test is evaluated experimentally through its probability of making type I error and its power:
+\begin{description}
+\item[type I error] The test reports a difference between the performance of 2 learning algorithms, when no difference exists.
+\item[power] The ability to detect algorithm differences when differences exist.
+\end{description}
+\subsection{Statistical tests design and evaluation procedure}
+\subsubsection{Identification of the sources variation to be controlled by each test}
+A good statistical test should be robust against 4 important sources for the case under study, which are described below.
+\begin{description}
+  \item[evaluation data selection] different evaluation data might result in different test performances of a classifier;
+  \item[training data selestion] different training data might result in a learning algorithm producing significantly different classifiers;
+  \item[internal randomness in the learning algorithm] the algorithm has a random start feature and the the classifier it outputs depends on the random start and therefore is also random;
+  \item[random validation data erorr] the variance of mislabeling in the validation data;
+\end{description}
+\subsubsection{The rest of the procedure is not mentioned in the paper}
+\subsection{Result}
+A brief summary of the investigation is shown in Table \ref{tab:result}. None of these tests can answer the question the study tried to address, because they all require using holdout or resampling methods. All of them are approximate heuristic tests, not rigorously correct statistical methods. The study admits the result is tentative because the experiments are based on only 2 learning algorithms and 3 datasets.
+\begin{table}[htb]
+  \centering
+  \begin{tabularx}{\textwidth}{|l|l|l|X|} \hline
+    test ID & type I error probability & power & recommendation \\ \hline
+    1 & high & low & should never be used  \\ \hline
+    2 & high & na & should never be used \\ \hline
+    3 & elevated & best & use with caution \\ \hline
+    4 & low & acceptable & good for expensive learning algorithms \\ \hline
+    5 & acceptable & acceptable & good for cheap learning algorithms \\ \hline
+  \end{tabularx}
+  \caption{Performance measure of 5 statistical tests}
+  \label{tab:result}
+\end{table}
+
+\section{Empirical analysis}
+The training and validation accuracies of naive bayes and logistic regression on fortune cookie dataset are shown in Table \ref{tab:fortune}. The performance of of logistic regression and naive bayes are very close: compared to logistic regression, naive bayes has slightly lower training accuracy (about 0.31\%), but slightly higher testing accuracy (about 1.98\%). As in this experiment, logistic regression is a probabilistic classifier, and essentially also a linear classifier. The fact that it successfully classifies the data implies the data is linearly seperable. Naive bayes is a probabilistic classifier based on naive bayes assumption. As it also accurately classifies the data, we can infer that the elements in the feature vectors are conditionally independent given the label.
+\begin{table}[htb]
+  \centering
+  \begin{tabularx}{\textwidth}{|X|X|X|X|} \hline
+    classifier name & classifier type & training accuracy & testing accuracy \\ \hline
+    naive bayes & generative & 72.3602 \% & 83.1683 \% \\ \hline
+    logistic regression & discriminative & 72.6708 \% & 81.1881 \% \\ \hline
+  \end{tabularx}
+  \caption{Comparison of training and validation accuracies of naive bayes and logistic regression on fortune cookie dataset}
+  \label{tab:fortune}
+\end{table}
+\bibliographystyle{plain}
+\bibliography{ml}
+\end{document}

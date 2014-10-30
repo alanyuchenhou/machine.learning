@@ -41,6 +41,8 @@ template <class sample_t, class weight_t>
 void getTau(int iteration, string updateAlgorithm, double & tau, weight_t const & weight,
 	    sample_t const & sample, int classPrediction, int classReference)
 {
+  iteration = 0;
+
   if (updateAlgorithm == "passiveAgressive")
     {
       double numerator = 1 -

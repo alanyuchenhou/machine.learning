@@ -1,0 +1,16 @@
+\begin{thebibliography}{1}
+
+\bibitem{dietterich1998approximate}
+Thomas~G Dietterich.
+\newblock Approximate statistical tests for comparing supervised classification
+  learning algorithms.
+\newblock {\em Neural computation}, 10(7):1895--1923, 1998.
+
+\bibitem{jordan2002discriminative}
+A~Jordan.
+\newblock On discriminative vs. generative classifiers: A comparison of
+  logistic regression and naive bayes.
+\newblock {\em Advances in neural information processing systems}, 14:841,
+  2002.
+
+\end{thebibliography}
