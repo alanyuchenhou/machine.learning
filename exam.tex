@@ -26,9 +26,10 @@
   \section{2-class linear classifier}
   \begin{description}
   \item[label] $y = 1, -1$
-  \item[weight vector] $w$
-  \item[linear prediction] $f(x) = w \cdot x + b$
-  \item[classification] $\hat{y} = sign(f(x))$
+  \item[attribute vector] $x = [1, x_1, x_2, ... x_n]$
+  \item[weight vector] $w = [w_0, w_1, w_2, ... w_n]$
+  \item[linear regression] $f(x) = w \cdot x$
+  \item[linear classification] $h(x) = sign(f(x))$
   \item[functional margin] $M = y \cdot f(x)$
   \item[geometric margin] $M = \frac{y \cdot f(x)}{||w||}$
   \item[natural (0-1) loss]
@@ -53,7 +54,7 @@
   \item[feature vector] $F(x,4) = (0,0,0,x,0...0)$
   \item[update vector] $\delta x_t = F(x_t,y_t) - F(x_t,\hat{y_t})$
   \item[linear prediction] $f_r(x) = w \cdot F(x,r) + b$
-  \item[classification] $\hat{y} = argmax_r(f_r(x))$
+  \item[classification] $h(x) = argmax_r(f_r(x))$
   \item[margin] $M = f_{y_t}(x) - f_{\hat{y_t}}(x)$
   \item[hinge loss]
     $l_{h} =
@@ -69,10 +70,10 @@
   \item[examples] perceptron, passive-agressive
   \item[2-class weight update]
     for t = 1, 2...n \\
-    $w_{t+_1} = w_{t} + \tau y_{t} x_{t}$
+    $w_{t+1} = w_{t} + (y-h(x)) x_{t}$
   \item[multi-class weight update]
     for t = 1, 2...n \\
-    $w_{t+_1} = w_{t} + \tau \delta x_t$
+    $w_{t+1} = w_{t} + \tau \delta x_t$
   \item[tradeoff] corrective, conservative
   \end{description}
 
@@ -226,7 +227,7 @@
     \item[prediction goal] predict the test vector to closest training vector
     \item[prediction rule]
       \begin{align*}
-        \hat{y} &= y_i\\
+        h(x) &= y_i\\
         i &= argmin_i (||x_i - x||)
       \end{align*}
   \end{description}
@@ -299,8 +300,8 @@
 
   \section{probabilistic classifier}
   \begin{description}
-    \item[maximum posterior probability classification] $\hat{y} = argmax_k(p(Y=k|X=x))$
-    \item[minimum expected loss classification] $\hat{y} = argmin_k \sum_j l(\hat{y}=k,y=j)(p(Y=j|X=x))$
+    \item[maximum posterior probability classification] $h(x) = argmax_k(p(Y=k|X=x))$
+    \item[minimum expected loss classification] $h(x) = argmin_k \sum_j l(h(x)=k,y=j)(p(Y=j|X=x))$
       \item[example] logistic regression, naive bayes
   \end{description}
 
