@@ -1,0 +1,119 @@
+\documentclass[12pt]{article}
+\renewcommand*{\familydefault}{\sfdefault}
+\usepackage{listings}
+\usepackage{amsmath}
+\usepackage{fullpage}
+\usepackage{tabularx}
+\usepackage{graphicx}
+\usepackage{cite}
+\begin{document}
+\title{CS570 Machine Learning Homework 5}
+\author{Yuchen Hou}
+\maketitle
+
+\section{Overfitting and under-computing in machine learning}
+\subsection{Background and Motivation}
+Supervised learning requires labeled data and infers a function that can predict labels for data\cite{dietterich1995overfitting}. One of the interesting thing is, advanced algorithms that search hypothesis functions like 2nd-order methods have performance worse than simple gradient descent or greedy search. As the learning algorithm is provided only training data and hence can only fit the hypothesis function to the training data, it is hard for it to achieve the goal of accurate prediction on the testing data. The reason is noise in the training data usually leads the learning algorithm to try too hard to fit the noise and the hypothesis function becomes too complecated (overfit).
+\subsection{Focus and formulation}
+The problem of constructing this function is formulated as a optimization problem. A learning algorithm is essentially a local search algorithm. The problem can be formulated in this way:
+\begin{description}
+  \item[learning algorithm] the local search algorithm, typically greedy local search or hill climbing search, gradient descent;
+  \item[hypothesis function space] the state space / search space, every hopythesis function is a state;
+  \item[objective function] the heuristic function characterizing how good the hypothesis function is, typically a measure of the fitness of the hypothesis function
+\end{description}
+\subsection{Goals of the study}
+The goal of the study is to formulate the learning problem as an optimization problem or local search problem and  emphasize the approach of undercomputing to solve overfitting problem.
+\subsection{Approach}
+Add and additional term into the objective function to take into account the complexity of the hypothesis function, to penalize the complexity. The idea behind this is by reducing the performance of the hypothesis function (making it less optimal) on the training set, the learning algorithm can potentially achieve better performance of the hypothesis function (making it more optimal) on the test set. Undercomputing means try less hard in the search for the hypothesis funtion, or fit the hypothesis to the training data. Experimental results have shown that undercomputng can indeed alleviate the problem of overfitting.
+%% \subsection{Performance metrics}
+%% \subsection{Evaluation methods}
+%% \subsection{Result}
+
+\section{Ensemble Methods in Machine Learning}
+\subsection{Background and Motivation}
+An ensemble method is a meta learning algorithm\cite{dietterich2000ensemble}. It constructs an ensemble of hypothesis functions; let these hypothesis functions predict the data and returns the weighted average of all the predictions. An ensemble of hypotheses is usually much more accurate than the components of the ensemble, under the necessary and sufficient condition that the individual hypotheses are accurate and diverse.
+\subsection{Goals of the study}
+This paper reviews several ensemble methods, explains the reason of their high performance and also reviews some comparision of ensemble methods.
+\subsection{Focus and formulation}
+The high performance of ensemble classification results from the independent classifications. In the simplest case, where the ensemble prediction is an average of the individual predictions, as long as the majoriry of the individual predictions are correctly, the ensemble prediction is correct. So if the error rates of the individuals are bounded and less than 0.5 and errors are independent, the the probability of incorrect ensemble prediction is sum of probabilities of all the cases where more than half of the predictions are wrong, which is a binomial distribution.
+\subsection{Approach}
+In order to have more individuals to increase the performance of the ensemble, the individual hypotheses should be below 0.5 and their errors should be uncorrelated. There are 3 reasons an ensemble can performe better than individuals:
+\begin{enumerate}
+  \item The hypothesis space is very large compared to training data size. The learning algorithm can find many different hypotheses that all give similar accuracy on the training data. The average of these hypotheses have higher accuracy. Every individual of these hypotheses is a biased hypothesis from the real hypothesis, but they are all centered around the real hypothesis. The more individuals the ensemble has, the larger chance it has to have their average(center) close to the real hypothesis.
+  \item Many learning algorithms are local search algorithms that only find local optima which depend on the initial states. By random starting (random initialization), the ensemble hypothesis is created as a better approximation than any individual.
+  \item With a finite training data, the learning algorithm can search for a limited number of hypotheses, these hypotheses form a much smaller subspace of the original search space. If the real hypothesis is not in this subspace, then it is impossible for any of the individuals to represent the real hypothesis. But a weighted sum of them may represent it.
+\end{enumerate}
+\subsection{Methods}
+A few general purpose methods are reviewed in the paper.
+\subsubsection{Bayesian voting: enumerating the hypotheses}
+In bayesian voting, given the features of a data, the ensemble hypotheses does not predict the lable of the data, but predicts the probability distribution of the lable
+\begin{align*}
+  P(Y=y|X=x,h(S))
+\end{align*}
+The hypothesis ensemble h is determined by the training data S, and consists of all the hypotheses in the hypothese space. The weight of an individual hypothesis is its posterior probability, given the training sample.
+\begin{align*}
+  P(Y=y|X=x,h(S=s))
+  &= P(Y=y|X=x,S=s)\\
+  &= \sum_{h \in H} P(h|S=s) h(X=x)
+\end{align*}
+The posterior probability can be calculated using bayes rule
+\begin{align*}
+  P(h|S=s)
+  &= P(S=s|h)P(h)
+\end{align*}
+\subsubsection{Manipulating the training examples}
+The learning algorithm runs several times, each time on a different subset of the training samples of the training set. In this way, the learning algorithm generates several hypotheses (an ensemble of hypotheses). This technique works well for unstalbe learning algorithms. Several examples include cross validation, bagging(Bootstrap Aggregation), ada boost.
+\subsubsection{Manipulating the input features}
+The learning algorithm runs several times, each time based on a different subset of features and producing a unique hypothesis. The ensemble of these hypotheses only perform well when the features are highly redundant.
+\subsubsection{Manimulating the output targets}
+This technique applies to multi class classification problems. It has L ways to devide the original classes into a pair derived classes, with each derived class containing a subset of the original classes. In this way, any original class can be described by an intersection of these derived classes. Every individual in the ensemble is constructed to classify a data into one the derived classes in a pair of derived classes.
+\subsubsection{Injecting randomness}
+This method injects randomness into the learning algorithm. As many learning algorithms are essentially hill climbing searches, all the variants of hill climbing search with randomness can potentially be used to generate ensembles. For example: stochastic hill climbing, first choice hill climbing, random start hill climbing.
+
+\section{Low bias bagged support vector machines}
+    %% \begin{align*}
+      
+    %% \end{align*}
+\subsection{Background and Motivation}
+Bias variance theory decomposes the error of an ensemble of classifiers into 2 components: bias and variance, to facilitate the analysis of the behavior of the learning algorithm. Some ensemble methods reduce bias by increasing power of the learning algorithm; other ensemble methods reduce variance by injecting randomness into the learning process. The bias variance theory can provide information on tuning the individual classifiers in the ensemble guide the design of ensemble methods.
+\subsection{Goals}
+Analyses of bagging indicates that it is primarily a variance reduction technique and should be applied to low bias learning algorithms \cite{valentini2003low}. This paper tests this idea with SVMs by experiments.
+%% \subsection{Formulation}
+\subsection{Approach}
+This paper applies bias variance analysis to SVM ensemble tuning. The individual SVMs are tuned to minimize bias and then bagging reduces the ensembles variance. The paper proposed Lobag (low bias bagging) that selects low bias classifiers and combines them with bootstrap aggregation. SVMs have built-in mechanism for variance reduction because they use maximum margin classifiers and bagging has negative effect for SVMs in some classification problems.
+\subsubsection{Random aggregating}
+The sequence of training sets which are randomly drawn and used by the learning algorithm to learn new classifiers. It can remove all variance and is suitable for minimum bias learning algorithms.
+\subsubsection{Bootstrap aggregating}
+Bootstrap aggregating is an approximation of random aggregating, because the bootstrap samples are drawn uniformly and not independently.
+\subsubsection{Lobag}
+Low bias aggregating tunes SVMs to minimize the bias and then aggregate to reduce variance, to achieve very low error ensemble.
+\subsection{Algorithm}
+Lobag estimates the bias of the learning algorithm with every possible parameter setting and chooses the parameter setting that minimizes the bias. After choosing the parameter(in other words, parameterizing the algorithm), the lobag algorithm uses the parameterized learning algorithm to construct an ensemble of classifiers with standard bagging algorithm.
+%% \subsection{Performance metrics}
+\subsection{Evaluation methods}
+Numerical experiments are performed on different data sets, with lobag method and SVMs as base learners. The results are compared with single SVMs and bagging algorithm. The experiments involved the training and testing of 10 million SVMs and several 2-class data sets, most of which are from UCI repository.
+\subsection{Experimental setup}
+The paper employed 2 synthetic data sets and 5 real data sets, with small training sets and large testing sets. The training set in the experiments are small with 100 examples and the testing sets are big with thousands of exaples.
+\subsection{Experimental result}
+Generally, Bagging and lobag outperform single SVMs. Lobag generally outperforms bagging.
+\subsection{Conclusion}
+Bagging of low-bias SVMs often improves(and never decreases) the generalization performance compared to well tuned single SVMs and to bags of individually well tuned SVMs. The best way to tune the SVM parameters is to first minimize bias and then aggregate to reduce variance.
+
+%% \section{Low bias bagged support vector machines}
+    %% \begin{align*}
+      
+    %% \end{align*}
+%% \subsection{Background and Motivation}
+%% \subsection{Goals}
+%% \subsection{Formulation}
+%% \subsection{Approach}
+%% \subsection{Methods}
+%% \subsection{Algorithm}
+%% \subsection{Performance metrics}
+%% \subsection{Evaluation methods}
+%% \subsection{Result}
+%% \subsection{Conclusion}
+
+\bibliographystyle{plain}
+\bibliography{ml}
+\end{document}

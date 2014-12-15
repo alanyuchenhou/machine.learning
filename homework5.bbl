@@ -1,0 +1,18 @@
+\begin{thebibliography}{1}
+
+\bibitem{dietterich2000ensemble}
+Thomas~G Dietterich.
+\newblock Ensemble methods in machine learning.
+\newblock In {\em Multiple classifier systems}, pages 1--15. Springer, 2000.
+
+\bibitem{dietterich1995overfitting}
+Tom Dietterich.
+\newblock Overfitting and undercomputing in machine learning.
+\newblock {\em ACM computing surveys (CSUR)}, 27(3):326--327, 1995.
+
+\bibitem{valentini2003low}
+Giorgio Valentini and Thomas~G Dietterich.
+\newblock Low bias bagged support vector machines.
+\newblock In {\em ICML}, pages 752--759, 2003.
+
+\end{thebibliography}
